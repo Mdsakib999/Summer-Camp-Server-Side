@@ -33,7 +33,12 @@ async function run() {
 
 
     app.get('/instractor', async(req, res) =>{
-        const result = await teacherCollection.find().limit(3).toArray();
+        const result = await teacherCollection.find().toArray();
+        res.send(result);
+    })
+
+    app.get('/instractorHome', async(req, res) =>{
+        const result = await teacherCollection.find().limit(6).toArray();
         res.send(result);
     })
 
@@ -46,7 +51,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
 
 
 
