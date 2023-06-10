@@ -35,11 +35,15 @@ async function run() {
     // All users  Api
     app.post('/users', async(req, res) =>{
       const user = req.body;
-      console.log(user);
+      // console.log(user);
       const result = await userCollection.insertOne(user);
       res.send(result);
     })
 
+    app.get('/users', async(req, res) => {
+      const result = await userCollection.find().toArray();
+      res.send(result);
+    })
 
 
     // instructor api
