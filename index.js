@@ -45,6 +45,15 @@ async function run() {
       res.send(result);
     })
 
+
+
+    app.get('/instractor', async(req, res) =>{
+      
+      const query = {role: 'Instructor'};
+      const result = await userCollection.find(query).toArray();
+      res.send(result);
+  })
+
     // get admin or user
     app.get('/users/:email', async(req, res) =>{
       const email = req.params.email;
@@ -92,10 +101,7 @@ async function run() {
 
 
     // instructor api 
-    app.get('/instractor', async(req, res) =>{
-        const result = await teacherCollection.find().toArray();
-        res.send(result);
-    })
+   
 
     app.get('/instractorHome', async(req, res) =>{
         const result = await teacherCollection.find().limit(6).toArray();
