@@ -60,7 +60,7 @@ async function run() {
     })
 
 
-
+    //instructor from all users
     app.get('/instractor', async(req, res) =>{
       
       const query = {role: 'Instructor'};
@@ -94,7 +94,6 @@ async function run() {
           role: 'admin'
         },
       };
-
       const result = await userCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
@@ -107,16 +106,25 @@ async function run() {
           role: 'Instructor'
         },
       };
-
       const result = await userCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
 
+    // approve or denied class 
+    app.patch('/classes/approve/:id', async(req, res) =>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const updateDoc = {
+        $set: {
+          status: 'Approved'
+        },
+      }
+      const result = await classCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    })
 
 
     // instructor api 
-   
-
     app.get('/instractorHome', async(req, res) =>{
         const result = await teacherCollection.find().limit(6).toArray();
         res.send(result);
