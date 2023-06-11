@@ -68,6 +68,14 @@ async function run() {
       res.send(result);
   })
 
+// a single teacher added all class.
+  app.get('/classes/:email', async(req, res) =>{
+    const email = req.params.email;
+    const query = {instructorEmail: email}
+    const result = await classCollection.find(query).toArray();
+    res.send(result);
+  })
+
     // get admin or user
     app.get('/users/:email', async(req, res) =>{
       const email = req.params.email;
@@ -117,6 +125,18 @@ async function run() {
       const updateDoc = {
         $set: {
           status: 'Approved'
+        },
+      }
+      const result = await classCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    })
+
+    app.patch('/classes/denied/:id', async(req, res) =>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const updateDoc = {
+        $set: {
+          status: 'Denied'
         },
       }
       const result = await classCollection.updateOne(filter, updateDoc);
