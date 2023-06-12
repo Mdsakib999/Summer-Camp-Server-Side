@@ -34,7 +34,7 @@ async function run() {
 
     const classCollection = client.db("SummerCamp").collection("classes");
 
-    // All users  Api
+    // All users  Api add to db
     app.post('/users', async(req, res) =>{
       const user = req.body;
       // console.log(user);
@@ -49,6 +49,12 @@ async function run() {
       res.send(result);
     })
 
+    // get add classes
+    app.get('/classes/allClasses', async(req, res) =>{
+      const result = await classCollection.find().toArray();
+      res.send(result);
+    })
+
     app.get('/users', async(req, res) => {
       const result = await userCollection.find().toArray();
       res.send(result);
@@ -57,7 +63,7 @@ async function run() {
     app.get('/classes', async(req, res) =>{
       const result = await classCollection.find().toArray();
       res.send(result);
-    })
+    }) 
 
 
     //instructor from all users
