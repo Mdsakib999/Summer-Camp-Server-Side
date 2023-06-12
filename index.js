@@ -60,7 +60,8 @@ async function run() {
     // add selected class
     app.post('/selectedClass', async(req, res) =>{
       const user = req.body;
-      const result = await selectedClassCollection.insertOne(user)
+      const result = await selectedClassCollection.insertOne(user);
+      res.send(result);
     })
 
     // get add classes
@@ -70,8 +71,20 @@ async function run() {
       res.send(result);
     })
 
+
+    app.get('/homeClasses', async(req, res) =>{
+      const query = {status: 'Approved'}
+      const result = await classCollection.find(query).limit(6).toArray();
+      res.send(result);
+    })
+
     app.get('/users', async(req, res) => {
       const result = await userCollection.find().toArray();
+      res.send(result);
+    })
+
+    app.get('/studentSelectedClasses', async(req, res) =>{
+      const result = await selectedClassCollection.find().toArray();
       res.send(result);
     })
 
