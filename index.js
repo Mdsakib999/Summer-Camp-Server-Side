@@ -74,6 +74,15 @@ async function run() {
       res.send(result);
   })
 
+  // instructor api 
+  app.get('/instractorHome', async(req, res) =>{
+    const query = {role: 'Instructor'};
+    const result = await userCollection.find(query).limit(6).toArray();
+    res.send(result);
+})
+
+
+
 // a single teacher added all class.
   app.get('/classes/:email', async(req, res) =>{
     const email = req.params.email;
@@ -84,6 +93,13 @@ async function run() {
 
     // get admin or user
     app.get('/users/:email', async(req, res) =>{
+      const email = req.params.email;
+      const query = {email: email}
+      const result = await userCollection.findOne(query);
+      res.send(result)
+    })
+
+    app.get('/allClasser/:email', async(req, res) =>{
       const email = req.params.email;
       const query = {email: email}
       const result = await userCollection.findOne(query);
@@ -149,12 +165,6 @@ async function run() {
       res.send(result);
     })
 
-
-    // instructor api 
-    app.get('/instractorHome', async(req, res) =>{
-        const result = await teacherCollection.find().limit(6).toArray();
-        res.send(result);
-    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
