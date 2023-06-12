@@ -27,17 +27,24 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    
 
     const teacherCollection = client.db("SummerCamp").collection("instractor");
     const userCollection = client.db("SummerCamp").collection("users");
 
     const classCollection = client.db("SummerCamp").collection("classes");
+    const selectedClassCollection = client.db("SummerCamp").collection("selectedClasses");
+
 
     // All users  Api add to db
     app.post('/users', async(req, res) =>{
       const user = req.body;
-      // console.log(user);
+      const query = { email: user.email };
+      const existingUser = await usersCollection.findOne(query);
+      if(existingUser){
+
+        return res.send({ message: "user already existed" })
+      }
       const result = await userCollection.insertOne(user);
       res.send(result);
     })
@@ -48,10 +55,18 @@ async function run() {
       const result = await classCollection.insertOne(user);
       res.send(result);
     })
+    
+
+    // add selected class
+    app.post('/selectedClass', async(req, res) =>{
+      const user = req.body;
+      const result = await selectedClassCollection.insertOne(user)
+    })
 
     // get add classes
     app.get('/classes/allClasses', async(req, res) =>{
-      const result = await classCollection.find().toArray();
+      const query = {status: 'Approved'}
+      const result = await classCollection.find(query).toArray();
       res.send(result);
     })
 
@@ -64,7 +79,6 @@ async function run() {
       const result = await classCollection.find().toArray();
       res.send(result);
     }) 
-
 
     //instructor from all users
     app.get('/instractor', async(req, res) =>{
